@@ -16,7 +16,6 @@
 		55F606452B4CB53B00427A8B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F606432B4CB53A00427A8B /* AVFoundation.framework */; };
 		55F606472B4CB54900427A8B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F606462B4CB54900427A8B /* AVKit.framework */; };
 		55F6064A2B4CB56700427A8B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F606492B4CB56700427A8B /* UIKit.framework */; };
-		D2010EFB1B0E8A8D00BD0BDF /* ElephantSeals.mov in Resources */ = {isa = PBXBuildFile; fileRef = D2010EFA1B0E8A8D00BD0BDF /* ElephantSeals.mov */; };
 		D20EB3C21AF94FDE0059CD72 /* AAPLPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20EB3C11AF94FDE0059CD72 /* AAPLPlayerViewController.m */; };
 		D2385B4B1AF5181400DC8ADE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2385B491AF5181400DC8ADE /* Main.storyboard */; };
 		D2385B4D1AF5181400DC8ADE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2385B4C1AF5181400DC8ADE /* Images.xcassets */; };
@@ -39,7 +38,6 @@
 		55F606432B4CB53A00427A8B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		55F606462B4CB54900427A8B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		55F606492B4CB56700427A8B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		D2010EFA1B0E8A8D00BD0BDF /* ElephantSeals.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = ElephantSeals.mov; path = ../Common/ElephantSeals.mov; sourceTree = SOURCE_ROOT; };
 		D20EB3C11AF94FDE0059CD72 /* AAPLPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLPlayerViewController.m; sourceTree = "<group>"; };
 		D2385B421AF5181400DC8ADE /* AVFoundationSimplePlayer-ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AVFoundationSimplePlayer-ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2385B4A1AF5181400DC8ADE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -86,7 +84,6 @@
 		D2010EFD1B0E8AD600BD0BDF /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				D2010EFA1B0E8A8D00BD0BDF /* ElephantSeals.mov */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -205,7 +202,6 @@
 				559CF1322B4BBF650017EF28 /* server.js in Resources */,
 				D2385B4B1AF5181400DC8ADE /* Main.storyboard in Resources */,
 				D2385B4D1AF5181400DC8ADE /* Images.xcassets in Resources */,
-				D2010EFB1B0E8A8D00BD0BDF /* ElephantSeals.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
