@@ -141,16 +141,16 @@ NSString *kCellID = @"collectionCell";      // UICollectionViewCell storyboard i
         
         NSString *bundleFullPath = [[NSBundle mainBundle] bundlePath];
         NSString *exec = [NSString stringWithFormat:@"%@/TorrentRunner/TorrentRunner", bundleFullPath];
-        NSArray *args = [NSArray arrayWithObjects:@"magnet", selectedMedia[@"tid"], nil];
+        NSArray *args = [NSArray arrayWithObjects:@"magnet", [NSString stringWithFormat:@"\"%@\"", selectedMedia[@"tid"]], nil];
         
         NSThread *torrentThread = nil;
         torrentThread = [[NSThread alloc]
                          initWithBlock:^{
-            Task *magnetTask = [[Task alloc] init];
-            [magnetTask spawnTask:exec withArguments:args];
+            Task *task = [[Task alloc] init];
+            [task spawnTask:exec withArguments:args];
         }];
         // Set 2MB of stack space for the thread.
-        [torrentThread setStackSize:2*1024*1024];
+//        [torrentThread setStackSize:2*1024*1024];
         [torrentThread start];
         
         [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer * _Nonnull timer) {
