@@ -61,38 +61,32 @@ static void *RateKVOContext = &RateKVOContext;
             });
             // SHOW LOADER HERE
             [NSTimer scheduledTimerWithTimeInterval:15 repeats:NO block:^(NSTimer * _Nonnull timer) {
-                
-                //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
-                NSURL *selectedMediaURL = nil;
-                
+            
                 NSString *downloadsDirectory =@"/private/var/mobile/Downloads/";
                 NSFileManager *fileManager = [NSFileManager defaultManager];
                 NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadsDirectory error:nil];
                 
-                
+                NSURL *selectedMediaURL = nil;
                 
                 for (NSString *downloadContent in downloadsDirectoryContents) {
-                    NSLog(@"Download directory content: %@", downloadContent);
 
                     if ([downloadContent rangeOfString:self.selectedMedia[@"title"]].length) {
-                        NSLog(@"FOUND MEDIA DIRECTORY BY TITLE");
+                        NSLog(@"FOUND MEDIA DIRECTORY BY TITLE: %@", downloadContent);
                         
                         NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:[downloadsDirectory stringByAppendingString:downloadContent] error:nil];
                         
                         for (NSString *mediaContent in mediaDirectoryContents) {
                             
-                            NSLog(@"Media directory content: %@", mediaContent);
-                            
                             if ([mediaContent rangeOfString:@".mp4"].length) {
-                                NSLog(@"FOUND MEDIA FILE BY TITLE");
-                                selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/%@/%@", downloadsDirectory, downloadContent, mediaContent]];
+                                NSLog(@"FOUND MEDIA FILE: %@", mediaContent);
+                                selectedMediaURL = [NSURL fileURLWithPath:[downloadsDirectory stringByAppendingFormat:@"%@/%@", downloadContent, mediaContent]];
                             }
                         }
                     }
                 }
                 
-    //            self.asset = [AVURLAsset assetWithURL:self.mediaURL];
-                self.asset = [AVURLAsset URLAssetWithURL:selectedMediaURL options:nil];
+                self.asset = [AVURLAsset assetWithURL:selectedMediaURL];
+//                self.asset = [AVURLAsset URLAssetWithURL:selectedMediaURL options:nil];
             }];
             
             /*
