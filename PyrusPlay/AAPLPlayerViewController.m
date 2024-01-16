@@ -104,7 +104,7 @@ static void *RateKVOContext = &RateKVOContext;
 
 - (void)addRoutePickerView
 {
-    AVRoutePickerView *routerPickerView = [[AVRoutePickerView alloc] initWithFrame:CGRectMake(CGRectGetMidX([self.avRouterPickerView bounds]), 0, 64, 64)];
+    AVRoutePickerView *routerPickerView = [[AVRoutePickerView alloc] initWithFrame:CGRectMake(4, 4, 48, 48)];
     routerPickerView.activeTintColor = [UIColor clearColor];
     routerPickerView.delegate = self;
     [self.avRouterPickerView addSubview:routerPickerView];
