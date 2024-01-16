@@ -70,14 +70,17 @@ static void *RateKVOContext = &RateKVOContext;
                 for (NSString *downloadContent in downloadsDirectoryContents) {
                     NSLog(@"Download directory content: %@", downloadContent);
 
-                    if ([downloadContent containsString:self.selectedMedia[@"title"]]) {
+                    if ([downloadContent rangeOfString:self.selectedMedia[@"title"]].length) {
+                        NSLog(@"FOUND MEDIA DIRECTORY BY TITLE");
+                        
                         NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadContent error:nil];
                         
                         for (NSString *mediaContent in mediaDirectoryContents) {
                             
                             NSLog(@"Media directory content: %@", mediaContent);
                             
-                            if ([mediaContent containsString:@".mp4"]) {
+                            if ([mediaContent rangeOfString:@".mp4"].length) {
+                                NSLog(@"FOUND MEDIA FILE BY TITLE");
                                 selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file:///private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
                             }
                         }
