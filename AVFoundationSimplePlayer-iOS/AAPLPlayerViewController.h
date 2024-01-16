@@ -18,7 +18,8 @@
 
 @property (readonly) AVPlayer *player;
 @property AVURLAsset *asset;
-@property NSURL *mediaURL;
+
+@property NSDictionary *selectedMedia;
 
 @property CMTime currentTime;
 @property (readonly) CMTime duration;
