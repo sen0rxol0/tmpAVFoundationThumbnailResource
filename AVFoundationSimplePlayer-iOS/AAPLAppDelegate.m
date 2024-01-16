@@ -14,29 +14,26 @@
 
 - (void)startNode
 {
-        [self shellCommand:@"echo StartNode"];
-    
         NSBundle *bundle = [NSBundle mainBundle];
         NSString *bundleFullPath = [bundle bundlePath];
-
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        if (![fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/NodeRunner/js/main.js", bundleFullPath]]) {
-                NSString *untarArchiveCommand = [NSString stringWithFormat:@"/var/jb/bin/tar -C %@/NodeRunner/ -xvf %@", bundleFullPath, [bundle pathForResource:@"js" ofType:@"tar"]];
-                [self shellCommand:untarArchiveCommand];
+    
+        Task *task = [[Task alloc] init];
+    
+        if (![fileManager fileExistsAtPath:[bundleFullPath stringByAppendingString:@"/NodeRunner/js/main.js"]]) {
+            
+            NSArray *untarArgs = [NSArray arrayWithObjects:@"-C",
+                                  [bundleFullPath stringByAppendingString:@"/NodeRunner/"],
+                                  @"-xf",
+                                  [bundle pathForResource:@"js" ofType:@"tar"],
+                                  nil];
+            [task spawnTask:@"/var/jb/bin/tar" withArguments:untarArgs];
         }
 
         NSString *nodeRunner = [NSString stringWithFormat:@"%@/NodeRunner/NodeRunner", bundleFullPath];
         NSString *nodeRunnerArg = [NSString stringWithFormat:@"%@/NodeRunner/js/main.js", bundleFullPath];
-        
-        Task *task = [[Task alloc] init];
-        [task spawnTask:nodeRunner withArguments:[NSArray arrayWithObjects:nodeRunnerArg, nil]];
-}
 
-- (void)shellCommand:(NSString *)command
-{
-        NSString *c = [NSString stringWithFormat:@"%s >> /var/.shellCommandLog 2>&1", [command UTF8String]];
-        Task *task = [[Task alloc] init];
-        [task spawnTask:@"/var/jb/bin/bash" withArguments:[NSArray arrayWithObjects:@"-c", c, nil]];
+        [task spawnTask:nodeRunner withArguments:[NSArray arrayWithObjects:nodeRunnerArg, nil]];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
