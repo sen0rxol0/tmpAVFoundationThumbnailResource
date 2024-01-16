@@ -64,8 +64,12 @@ static void *RateKVOContext = &RateKVOContext;
                 
                 //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
                 NSURL *selectedMediaURL = nil;
+                
+                NSString *downloadsDirectory =@"/private/var/mobile/Downloads/";
                 NSFileManager *fileManager = [NSFileManager defaultManager];
-                NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:@"/private/var/mobile/Downloads/" error:nil];
+                NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadsDirectory error:nil];
+                
+                
                 
                 for (NSString *downloadContent in downloadsDirectoryContents) {
                     NSLog(@"Download directory content: %@", downloadContent);
@@ -73,7 +77,7 @@ static void *RateKVOContext = &RateKVOContext;
                     if ([downloadContent rangeOfString:self.selectedMedia[@"title"]].length) {
                         NSLog(@"FOUND MEDIA DIRECTORY BY TITLE");
                         
-                        NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadContent error:nil];
+                        NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:[downloadsDirectory stringByAppendingString:downloadContent] error:nil];
                         
                         for (NSString *mediaContent in mediaDirectoryContents) {
                             
@@ -81,7 +85,7 @@ static void *RateKVOContext = &RateKVOContext;
                             
                             if ([mediaContent rangeOfString:@".mp4"].length) {
                                 NSLog(@"FOUND MEDIA FILE BY TITLE");
-                                selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file:///private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
+                                selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/%@/%@", downloadsDirectory, downloadContent, mediaContent]];
                             }
                         }
                     }
