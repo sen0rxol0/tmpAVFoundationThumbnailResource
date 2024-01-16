@@ -9,7 +9,6 @@ The primary view controller for this app.
 #import "CollectionViewController.h"
 #import "AAPLPlayerViewController.h"
 #import "Cell.h"
-#import "Task.h"
 
 
 
@@ -135,53 +134,9 @@ NSString *kCellID = @"collectionCell";      // UICollectionViewCell storyboard i
     {
         //NSLog(@"HERE!");
         NSIndexPath *selectedIndexPath = [self.collectionView indexPathsForSelectedItems][0];
-        NSDictionary *selectedMedia = [self.loadedMediaManifest objectAtIndex:(long)selectedIndexPath.row];
         
-        NSString *bundleFullPath = [[NSBundle mainBundle] bundlePath];
-        NSString *exec = [NSString stringWithFormat:@"%@/TorrentRunner/TorrentRunner", bundleFullPath];
-        NSArray *args = [NSArray arrayWithObjects:@"magnet", [NSString stringWithFormat:@"\"%@\"", selectedMedia[@"tid"]], nil];
-        
-//        NSThread *torrentThread = nil;
-//        torrentThread = [[NSThread alloc]
-//                         initWithBlock:^{
-//
-//        }];
-//        [torrentThread start];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-            Task *task = [[Task alloc] init];
-            [task spawnTask:exec withArguments:args];
-
-        });
-        
-        [NSTimer scheduledTimerWithTimeInterval:15 repeats:NO block:^(NSTimer * _Nonnull timer) {
-            
-            //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
-            NSURL *selectedMediaURL = nil;
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:@"/private/var/mobile/Downloads/" error:nil];
-        
-            for (NSString *downloadContent in downloadsDirectoryContents) {
-                NSLog(@"Download directory content: %@", downloadContent);
-                if ([downloadContent containsString:selectedMedia[@"title"]]) {
-                    NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadContent error:nil];
-                    
-                    for (NSString *mediaContent in mediaDirectoryContents) {
-                        
-                        NSLog(@"Media directory content: %@", mediaContent);
-                        
-                        if ([mediaContent containsString:@".mp4"]) {
-                            selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file:///private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
-                        }
-                    }
-                }
-            }
-  
-            
-            AAPLPlayerViewController *playerViewController = [segue destinationViewController];
-            playerViewController.mediaURL = selectedMediaURL;
-        }];
+        AAPLPlayerViewController *playerViewController = [segue destinationViewController];
+        playerViewController.selectedMedia = [self.loadedMediaManifest objectAtIndex:(long)selectedIndexPath.row];
     }
 }
 
