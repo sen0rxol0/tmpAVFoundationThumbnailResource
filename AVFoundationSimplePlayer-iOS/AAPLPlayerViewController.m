@@ -8,6 +8,9 @@
 
 #import "AAPLPlayerViewController.h"
 #import "AAPLPlayerView.h"
+#import "Task.h"
+
+
 
 
 // Private properties
@@ -41,11 +44,51 @@ static void *RateKVOContext = &RateKVOContext;
 - (void)viewWillAppear:(BOOL)animated {
             [super viewWillAppear:animated];
                 
-            AVRoutePickerView *routerPickerView = [[AVRoutePickerView alloc]
-                                                   initWithFrame:CGRectMake(CGRectGetMidX([self.avRouterPickerView bounds]), 0, 64, 64)];
-            routerPickerView.activeTintColor = [UIColor clearColor];
-            routerPickerView.delegate = self;
-            [self.avRouterPickerView addSubview:routerPickerView];
+    
+            NSString *bundleFullPath = [[NSBundle mainBundle] bundlePath];
+            NSString *exec = [bundleFullPath stringByAppendingString:@"/TorrentRunner/TorrentRunner"];
+            NSArray *args = [NSArray arrayWithObjects:@"magnet", self.selectedMedia[@"tid"], nil];
+            
+            Task *task = [[Task alloc] init];
+    
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+ 
+                [task spawnTask:exec withArguments:args];
+
+            });
+            
+            [NSTimer scheduledTimerWithTimeInterval:15 repeats:NO block:^(NSTimer * _Nonnull timer) {
+                
+                //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
+                NSURL *selectedMediaURL = nil;
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:@"/private/var/mobile/Downloads/" error:nil];
+            
+                NSLog(@"Selected media title: %@", self.selectedMedia[@"title"]);
+                NSLog(@"Selected media tid: %@", self.selectedMedia[@"tid"]);
+                
+                for (NSString *downloadContent in downloadsDirectoryContents) {
+                    NSLog(@"Download directory content: %@", downloadContent);
+
+                    if ([downloadContent containsString:self.selectedMedia[@"title"]]) {
+                        NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadContent error:nil];
+                        
+                        for (NSString *mediaContent in mediaDirectoryContents) {
+                            
+                            NSLog(@"Media directory content: %@", mediaContent);
+                            
+                            if ([mediaContent containsString:@".mp4"]) {
+                                selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file:///private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
+                            }
+                        }
+                    }
+                }
+                
+                
+                
+    //            self.asset = [AVURLAsset assetWithURL:self.mediaURL];
+                self.asset = [AVURLAsset URLAssetWithURL:selectedMediaURL options:nil];
+            }];
             
             /*
                 Update the UI when these player properties change.
@@ -59,9 +102,6 @@ static void *RateKVOContext = &RateKVOContext;
             [self addObserver:self forKeyPath:@"player.rate" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:RateKVOContext];
 
             self.playerView.playerLayer.player = self.player;
-            
-//            self.asset = [AVURLAsset assetWithURL:self.mediaURL];
-            self.asset = [AVURLAsset URLAssetWithURL:self.mediaURL options:nil];
 
             // Use a weak self variable to avoid a retain cycle in the block.
             AAPLPlayerViewController __weak *weakSelf = self;
@@ -70,6 +110,12 @@ static void *RateKVOContext = &RateKVOContext;
                                                                       usingBlock:^(CMTime time) {
                 weakSelf.timeSlider.value = CMTimeGetSeconds(time);
             }];
+    
+            AVRoutePickerView *routerPickerView = [[AVRoutePickerView alloc]
+                                                   initWithFrame:CGRectMake(CGRectGetMidX([self.avRouterPickerView bounds]), 0, 64, 64)];
+            routerPickerView.activeTintColor = [UIColor clearColor];
+            routerPickerView.delegate = self;
+            [self.avRouterPickerView addSubview:routerPickerView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
