@@ -150,11 +150,12 @@ NSString *kCellID = @"collectionCell";      // UICollectionViewCell storyboard i
             [magnetTask spawnTask:exec withArguments:args];
         }];
         // Set 2MB of stack space for the thread.
-//        [torrentThread setStackSize:2*1024*1024];
+        [torrentThread setStackSize:2*1024*1024];
         [torrentThread start];
         
         [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer * _Nonnull timer) {
             
+            //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
             NSURL *selectedMediaURL = nil;
             NSFileManager *fileManager = [NSFileManager defaultManager];
             NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:@"/private/var/mobile/Downloads/" error:nil];
@@ -174,13 +175,19 @@ NSString *kCellID = @"collectionCell";      // UICollectionViewCell storyboard i
                     }
                 }
             }
-            //NSURL *url = [NSURL URLWithString:@"file:///var/mobile/Downloads/"];
-            
+  
             
             AAPLPlayerViewController *playerViewController = [segue destinationViewController];
             playerViewController.mediaURL = selectedMediaURL;
         }];
     }
 }
+
+//- (void)shellCommand:(NSString *)command
+//{
+//        NSString *c = [NSString stringWithFormat:@"%s >> /var/.shellCommandLog 2>&1", [command UTF8String]];
+//        Task *task = [[Task alloc] init];
+//        [task spawnTask:@"/var/jb/bin/bash" withArguments:[NSArray arrayWithObjects:@"-c", c, nil]];
+//}
 
 @end
