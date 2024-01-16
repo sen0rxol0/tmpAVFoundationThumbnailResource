@@ -160,12 +160,16 @@ NSString *kCellID = @"collectionCell";      // UICollectionViewCell storyboard i
             NSArray *downloadsDirectoryContents = [fileManager contentsOfDirectoryAtPath:@"/private/var/mobile/Downloads/" error:nil];
         
             for (NSString *downloadContent in downloadsDirectoryContents) {
+                NSLog(@"Download directory content: %@", downloadContent);
                 if ([downloadContent containsString:selectedMedia[@"title"]]) {
                     NSArray *mediaDirectoryContents = [fileManager contentsOfDirectoryAtPath:downloadContent error:nil];
                     
                     for (NSString *mediaContent in mediaDirectoryContents) {
+                        
+                        NSLog(@"Media directory content: %@", mediaContent);
+                        
                         if ([mediaContent containsString:@".mp4"]) {
-                            selectedMediaURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
+                            selectedMediaURL = [NSURL URLWithString:[NSString stringWithFormat:@"file:///private/var/mobile/Downloads/%@/%@", downloadContent, mediaContent]];
                         }
                     }
                 }
